@@ -46,12 +46,12 @@ class Scrapper {
                 const type = 1;
                 const city = 'Bauru'; //paragraphs[2];
                 
-                articles.push({ 
+                articles.push( 
                     title,
                     description,
                     type,
                     city
-                });
+                );
 
             });
 
