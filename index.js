@@ -3,6 +3,7 @@ const Scrapper = require('./src/Scrapper.js');
 const app = express();
 const PORT = 3000
 const cors = require('cors');
+require('dotenv').config();
 
 app.use(cors());
 
@@ -34,4 +35,4 @@ app.get("/", async (req, res) => {
 
 });
 
-app.listen(PORT, () => console.log('listening on port ' + PORT))
+app.listen(process.env.PORT, () => console.log('listening on port ' + process.env.PORT))
