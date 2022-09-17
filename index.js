@@ -6,15 +6,31 @@ const cors = require('cors');
 
 app.use(cors());
 
-app.get("/results", async (req, res) => {
+app.get("/", async (req, res) => {
 
-    const url = 'https://www.theguardian.com/uk';
-    const htmlClass = '.fc-item__title';
+    let url = 'https://www.bauruempregos.com.br/home/vagas';
+    let htmlClass = '.vaga';
+    let scrapper = new Scrapper(url, htmlClass);
+    let data = await scrapper.scrap();
 
-    const scrapper = new Scrapper(url, htmlClass);
-    const data = await scrapper.scrap();
+    let dadosDetalhes = [];
+    htmlClass = '.descricao-vaga';
 
-    res.send(data);
+    let ids = [];
+    data.map(element => ids.push(element.replace(/([^\d])+/gim, '')));
+
+    ids.forEach(id => {
+        url = `https://www.bauruempregos.com.br/home/detalhes/${id}`;
+        scrapper = new Scrapper(url, htmlClass);
+        dadosDetalhes.push(scrapper.scrapDetalhes());
+    });
+
+    let detalhes = [];
+    await Promise.all(dadosDetalhes).then((values) => {
+        detalhes.push(values);
+     });
+
+    res.send(detalhes);
 
 });
 
